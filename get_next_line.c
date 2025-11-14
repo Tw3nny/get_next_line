@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
+/*   By: matiguti <matiguti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/14 13:58:35 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/14 17:27:28 by matiguti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,13 @@
 
 char	*get_next_line(int fd)
 {
-
+	/* etape 1 :
+	-1 : check if fd >= 0 and BUFFER_SIZE > 0
+			read(fd, 0, 0) -> error ?
+	   etape 2 :
+	-2 : while != \n && != end of file(EOF) -> on lit la ligne
+	   etape 3 :
+	-3 : if |n(strchr) -> extraire la ligne(substr) + update static
+	-4 : else if EOF return ce qui existe
+	-5 : else if return NULL */
 }
