@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
+/*   By: matiguti <matiguti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/17 11:24:39 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/17 13:37:51 by matiguti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,29 @@ char	*strdup(char *str)
 	return (dup);
 }
 
+char	*ft_strjoin(const char *s1, const char *s2)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*join;
+
+	if (!s1)
+		return (malloc(1));
+	len = ft_strlen(s1 + s2);
+	join = malloc(sizeof(char) * (len + 1));
+	if (!join)
+		return (NULL);
+	i = 0;
+	while (s1[i] != '\0')
+	{
+		join[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j] != '\0')
+	{
+
+	}
+}
 
