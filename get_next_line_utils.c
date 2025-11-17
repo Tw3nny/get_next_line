@@ -6,7 +6,7 @@
 /*   By: matiguti <matiguti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/17 13:37:51 by matiguti         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:55:39 by matiguti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,29 +86,41 @@ char	*strdup(char *str)
 	return (dup);
 }
 
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	int				i;
+	unsigned char	*tmp_dst;
+	unsigned char	*tmp_src;
+
+	if (!dst && !src)
+		return (dst);	
+	tmp_dst = (unsigned char *) dst;
+	tmp_src = (unsigned char *) src;
+	i = 0;
+	while (i < n)
+	{
+		tmp_dst[i] = tmp_src[i];
+		i++;
+	}
+	return (dst);
+}
+
 char	*ft_strjoin(const char *s1, const char *s2)
 {
-	int		i;
-	int		j;
-	int		len;
+	int		len_s1;
+	int		len_s2;
 	char	*join;
 
 	if (!s1)
 		return (malloc(1));
-	len = ft_strlen(s1 + s2);
-	join = malloc(sizeof(char) * (len + 1));
+	len_s1 = ft_strlen(s1);
+	len_s2 = ft_strlen(s2);
+	join = malloc(sizeof(char) * (len_s1 + len_s2 + 1));
 	if (!join)
 		return (NULL);
-	i = 0;
-	while (s1[i] != '\0')
-	{
-		join[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j] != '\0')
-	{
-
-	}
+	ft_memcpy(join, s1, len_s1 + 1);
+	ft_memcpy(join + len_s1, s2, len_s2);
+	free(s1);
+	return (join);
 }
 
