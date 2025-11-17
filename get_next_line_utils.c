@@ -6,7 +6,7 @@
 /*   By: matiguti <matiguti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/17 13:55:39 by matiguti         ###   ########.fr       */
+/*   Updated: 2025/11/17 13:58:08 by matiguti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strlen(const char *str)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (str[i] != '\0')
@@ -51,7 +51,7 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 		return (NULL);
 	if (start > str_len)
 		return (malloc(1));
-	if (start + str_len > len)
+	if (start + len > str_len)
 		len = str_len - start;
 	substr = malloc(sizeof(char) * (len + 1));
 	if (!substr)
