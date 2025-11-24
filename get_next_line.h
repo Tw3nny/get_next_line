@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 12:01:00 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 02:56:17 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/24 16:17:02 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@ char	*ft_strdup(char *str);
 char	*ft_substr(const char *str, unsigned int start, size_t len);
 size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *str, int c);
+char	*get_next_line(int fd);
 
 #endif
