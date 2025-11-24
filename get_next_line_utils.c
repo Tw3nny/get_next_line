@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 02:58:05 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/24 14:55:19 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ char	*ft_strdup(char *str)
 
 char	*ft_substr(const char *str, unsigned int start, size_t len)
 {
-	int		i;
-	int		str_len;
-	char	*substr;
+	size_t			i;
+	size_t			str_len;
+	char			*substr;
 
 	str_len = ft_strlen(str);
 	if (!str)
@@ -73,7 +73,7 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int				i;
+	size_t			i;
 	unsigned char	*tmp_dst;
 	unsigned char	*tmp_src;
 
@@ -104,6 +104,5 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	ft_memcpy(join, s1, len_s1);
 	ft_memcpy(join + len_s1, s2, len_s2);
 	join[len_s1 + len_s2] = '\0';
-	free(s1);
 	return (join);
 }
