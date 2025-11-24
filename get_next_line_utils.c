@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matiguti <matiguti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/17 14:49:47 by matiguti         ###   ########.fr       */
+/*   Updated: 2025/11/24 02:58:05 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -24,20 +25,24 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strchr(const char *str, int c)
+char	*ft_strdup(char *str)
 {
-	int	i;
+	int		i;
+	int		size;
+	char	*dup;
 
+	size = ft_strlen(str);
+	dup = malloc(size + 1);
+	if (!dup)
+		return (NULL);
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == (char) c)
-			return ((char *) &str[i]);
+		dup[i] = str[i];
 		i++;
 	}
-	if (str[i] == (char) c)
-		return ((char *) &str[i]);
-	return (0);
+	dup[i] = '\0';
+	return (dup);
 }
 
 char	*ft_substr(const char *str, unsigned int start, size_t len)
@@ -66,32 +71,12 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 	return (substr);
 }
 
-char	*ft_strdup(char *str)
-{
-	int		i;
-	int		size;
-	char	*dup;
-
-	size = ft_strlen(str);
-	dup = malloc(size + 1);
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (str[i] != '\0')
-	{
-		dup[i] = str[i],
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
-
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	int				i;
 	unsigned char	*tmp_dst;
 	unsigned char	*tmp_src;
-	
+
 	tmp_dst = (unsigned char *) dst;
 	tmp_src = (unsigned char *) src;
 	i = 0;
@@ -118,8 +103,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		return (NULL);
 	ft_memcpy(join, s1, len_s1);
 	ft_memcpy(join + len_s1, s2, len_s2);
-	 join[len_s1 + len_s2] = '\0';
+	join[len_s1 + len_s2] = '\0';
 	free(s1);
 	return (join);
 }
-
