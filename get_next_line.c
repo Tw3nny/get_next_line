@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 16:57:43 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/24 21:47:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 #include <fcntl.h> // open()
 
 /* open() flags :
-	- O_RDONLY : open the file and read only 
-	- O_WRONLY : open the file and write only 
+	- O_RDONLY : open the file and read only
+	- O_WRONLY : open the file and write only
 	- O_RDWR : open the file with read + write mode
 	- O_CREAT : create a file if doesnt exist int the directory
 	- O_EXCL : use it with O_CREAT, protection when create a file */
 
-// cherche le \n 
+// cherche le \n
 char	*ft_strchr(const char *str, int c)
 {
 	int	i;
@@ -70,11 +70,20 @@ char	*fill_line_buffer(int fd, char *stash, char *buffer)
 	return (stash);
 }
 
-// si on trouve pas de newline dans set_line
+// si on trouve pas de newline dans set_line ou que si stash est vide
 char	*no_new_line(char **stash_ptr)
 {
 	char	*line;
 
+	if (!*stash_ptr || **stash_ptr == '\0')
+	{
+		if (*stash_ptr)
+		{
+			free(*stash_ptr);
+			*stash_ptr = NULL;
+		}
+		return (NULL);
+	}
 	line = ft_strdup(*stash_ptr);
 	free(*stash_ptr);
 	*stash_ptr = NULL;
@@ -91,7 +100,7 @@ static char	*set_line(char **stash_ptr)
 
 	stash = *stash_ptr;
 	if (!stash || *stash == '\0')
-		return (NULL);
+		return (no_new_line(stash_ptr));
 	newline = ft_strchr(stash, '\n');
 	if (!newline)
 		return (no_new_line(stash_ptr));
@@ -135,7 +144,7 @@ char	*get_next_line(int fd)
     int     fd;
     char    *line;
     int     line_count;
-    
+
     // Test 1: Fichier normal
     printf("=== TEST 1: Fichier normal ===\n");
     fd = open("test1.txt", O_RDONLY);
@@ -151,7 +160,7 @@ char	*get_next_line(int fd)
         free(line);
     }
     close(fd);
-    
+
     // Test 2: Fichier vide
     printf("\n=== TEST 2: Fichier vide ===\n");
     fd = open("test5.txt", O_RDONLY);
@@ -169,7 +178,7 @@ char	*get_next_line(int fd)
         free(line);
     }
     close(fd);
-    
+
     // Test 3: Plusieurs appels successifs
     printf("\n=== TEST 3: Appels multiples ===\n");
     fd = open("test1.txt", O_RDONLY);
@@ -186,7 +195,7 @@ char	*get_next_line(int fd)
     if (line == NULL)
         printf("4ème appel: NULL (fin de fichier)\n");
     close(fd);
-    
+
     // Test 4: Fichier sans \n final
     printf("\n=== TEST 4: Sans newline final ===\n");
     fd = open("test3.txt", O_RDONLY);
@@ -197,33 +206,33 @@ char	*get_next_line(int fd)
     if (line == NULL)
         printf("Ligne suivante: NULL (correct)\n");
     close(fd);
-    
+
     // Test 5: FD invalide
     printf("\n=== TEST 5: FD invalide ===\n");
     line = get_next_line(-1);
     if (line == NULL)
         printf("FD invalide retourne NULL (correct)\n");
-    
+
     // Test 6: Lecture multiple avec 2 FD différents
     printf("\n=== TEST 6: Deux FD en parallèle ===\n");
     int fd1 = open("test1.txt", O_RDONLY);
     int fd2 = open("test2.txt", O_RDONLY);
-    
+
     line = get_next_line(fd1);
     printf("FD1: [%s]", line);
     free(line);
-    
+
     line = get_next_line(fd2);
     printf("FD2: [%s]", line);
     free(line);
-    
+
     line = get_next_line(fd1);
     printf("FD1: [%s]", line);
     free(line);
-    
+
     close(fd1);
     close(fd2);
-    
+
     printf("\n=== TOUS LES TESTS TERMINES ===\n");
     return (0);
 } */
