@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 16:19:00 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/24 16:57:43 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*ft_strchr(const char *str, int c)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	while (str[i] != '\0')
 	{
 		if (str[i] == (char) c)
@@ -36,7 +38,7 @@ char	*ft_strchr(const char *str, int c)
 	}
 	if (str[i] == (char) c)
 		return ((char *) &str[i]);
-	return (0);
+	return (NULL);
 }
 // lit la ligne jusqu'a tomber sur \n + return stash complet
 
@@ -112,15 +114,18 @@ char	*get_next_line(int fd)
 	char		*buffer;
 	static char	*stash;
 
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = fill_line_buffer(fd, stash, buffer);
 	free(buffer);
 	if (!stash)
+	{
+		stash = NULL;
 		return (NULL);
+	}
 	line = set_line(&stash);
 	return (line);
 }
