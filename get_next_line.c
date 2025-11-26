@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 21:47:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/26 10:03:28 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,15 @@ static char	*set_line(char **stash_ptr)
 		return (no_new_line(stash_ptr));
 	len = (newline - stash) + 1;
 	line = ft_substr(stash, 0, len);
+	if (!line)
+		return (no_new_line(stash_ptr));
 	tmp = stash;
 	*stash_ptr = ft_substr(stash, len, ft_strlen(stash) - len);
 	free(tmp);
-	if (*stash_ptr && **stash_ptr == '\0')
-	{
-		free(*stash_ptr);
+	if (!*stash_ptr && (free(line), 1))
+		return (NULL);
+	if (*stash_ptr && **stash_ptr == '\0' && (free(*stash_ptr), 1))
 		*stash_ptr = NULL;
-	}
 	return (line);
 }
 
