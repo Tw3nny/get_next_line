@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/26 11:09:57 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/26 11:22:46 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,10 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 	static char *stash;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (NULL);
-	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = fill_line_buffer(fd, stash, buffer);
 	free(buffer);
@@ -125,7 +125,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-int main(void)
+/* int main(void)
 {
     int fd;
     char *line;
@@ -184,4 +184,4 @@ int main(void)
     unlink("test_multiple_nl.txt");
     
     return 0;
-}
+} */
