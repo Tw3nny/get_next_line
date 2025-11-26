@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/26 10:55:34 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/26 11:09:57 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h> // open()
+#define BUFFFER_SIZE 1
 
 /* open() flags :
 	- O_RDONLY : open the file and read only
@@ -25,8 +26,7 @@
 // cherche le \n
 char	*ft_strchr(const char *str, int c)
 {
-	int	i;
-	
+	int i;
 	i = 0;
 	while (str[i] != '\0')
 	{
@@ -38,13 +38,11 @@ char	*ft_strchr(const char *str, int c)
 		return ((char *) &str[i]);
 	return (0);
 }
-
 // lit la ligne jusqu'a tomber sur \n + return stash complet
 char	*fill_line_buffer(int fd, char *stash, char *buffer)
 {
-	ssize_t	bytes_read;
+	ssize_t bytes_read;
 	char	*tmp;
-	
 	if (!stash)
 		stash = ft_strdup("");
 	if (!stash)
@@ -67,36 +65,33 @@ char	*fill_line_buffer(int fd, char *stash, char *buffer)
 	}
 	return (stash);
 }
-
 // si on trouve pas de newline dans set_line
-char    *no_new_line(char **stash_ptr)
+char	*no_new_line(char **stash_ptr)
 {
-    char    *line;
-    
-    if (!*stash_ptr || **stash_ptr == '\0')
-    {
-        if (*stash_ptr)
-            free(*stash_ptr);
-        *stash_ptr = NULL;
-        return (NULL);
-    }
-    line = ft_strdup(*stash_ptr);
-    free(*stash_ptr);
-    *stash_ptr = NULL;
-    return (line);
+	char	*line;
+	
+	if (!*stash_ptr || **stash_ptr == '\0')
+	{
+		if (*stash_ptr)
+			free(*stash_ptr);
+		*stash_ptr = NULL;
+		return (NULL);
+	}
+	line = ft_strdup(*stash_ptr);
+	free(*stash_ptr);
+	*stash_ptr = NULL;
+	return (line);
 }
-
-static char	*set_line(char **stash_ptr)
+static char *set_line(char **stash_ptr)
 {
 	char	*stash;
 	char	*newline;
 	char	*line;
 	char	*tmp;
 	int		len;
-	
 	stash = *stash_ptr;
-	if (!stash)
-		return (NULL);
+	if (!stash || *stash == '\0')
+		return (no_new_line(stash_ptr));
 	newline = ft_strchr(stash, '\n');
 	if (!newline)
 		return (no_new_line(stash_ptr));
@@ -112,13 +107,11 @@ static char	*set_line(char **stash_ptr)
 	}
 	return (line);
 }
-
 char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*buffer;
-	static char	*stash;
-	
+	static char *stash;
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
@@ -132,100 +125,63 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* int main(void)
+int main(void)
 {
-    int     fd;
-    char    *line;
-    int     line_count;
-
-    // Test 1: Fichier normal
-    printf("=== TEST 1: Fichier normal ===\n");
-    fd = open("test1.txt", O_RDONLY);
-    if (fd < 0)
+    int fd;
+    char *line;
+    int count = 0;
+    
+    // Créer le fichier de test
+    system("printf '\\n\\n\\n\\n\\n\\n' > test_multiple_nl.txt");
+    
+    fd = open("test_multiple_nl.txt", O_RDONLY);
+    if (fd == -1)
     {
-        perror("open test1.txt");
-        return (1);
+        printf("❌ Erreur: impossible d'ouvrir le fichier\n");
+        return 1;
     }
-    line_count = 1;
-    while ((line = get_next_line(fd)) != NULL)
+    
+    printf("=== TEST MULTIPLE_NL (BUFFER_SIZE = %d) ===\n\n", BUFFER_SIZE);
+    
+    while (1)
     {
-        printf("Ligne %d: [%s]", line_count++, line);
+        line = get_next_line(fd);
+        count++;
+        
+        if (line == NULL)
+        {
+            printf("Appel %d: NULL\n", count);
+            break;
+        }
+        
+        printf("Appel %d: ", count);
+        
+        if (line[0] == '\n' && line[1] == '\0')
+            printf("\"\\n\" ✅\n");
+        else if (line[0] == '\0')
+            printf("\"\" ❌ (devrait être NULL)\n");
+        else
+        {
+            printf("\"");
+            for (int i = 0; line[i]; i++)
+            {
+                if (line[i] == '\n')
+                    printf("\\n");
+                else
+                    printf("%c", line[i]);
+            }
+            printf("\"\n");
+        }
+        
         free(line);
     }
+    
+    printf("\n=== RÉSULTAT ATTENDU ===\n");
+    printf("Appel 1-6: \"\\n\"\n");
+    printf("Appel 7: NULL\n");
+    
     close(fd);
-
-    // Test 2: Fichier vide
-    printf("\n=== TEST 2: Fichier vide ===\n");
-    fd = open("test5.txt", O_RDONLY);
-    if (fd < 0)
-    {
-        perror("open test5.txt");
-        return (1);
-    }
-    line = get_next_line(fd);
-    if (line == NULL)
-        printf("Retour NULL (correct pour fichier vide)\n");
-    else
-    {
-        printf("Ligne: [%s]\n", line);
-        free(line);
-    }
-    close(fd);
-
-    // Test 3: Plusieurs appels successifs
-    printf("\n=== TEST 3: Appels multiples ===\n");
-    fd = open("test1.txt", O_RDONLY);
-    line = get_next_line(fd);
-    printf("1er appel: [%s]", line);
-    free(line);
-    line = get_next_line(fd);
-    printf("2ème appel: [%s]", line);
-    free(line);
-    line = get_next_line(fd);
-    printf("3ème appel: [%s]", line);
-    free(line);
-    line = get_next_line(fd);
-    if (line == NULL)
-        printf("4ème appel: NULL (fin de fichier)\n");
-    close(fd);
-
-    // Test 4: Fichier sans \n final
-    printf("\n=== TEST 4: Sans newline final ===\n");
-    fd = open("test3.txt", O_RDONLY);
-    line = get_next_line(fd);
-    printf("Ligne: [%s]\n", line);
-    free(line);
-    line = get_next_line(fd);
-    if (line == NULL)
-        printf("Ligne suivante: NULL (correct)\n");
-    close(fd);
-
-    // Test 5: FD invalide
-    printf("\n=== TEST 5: FD invalide ===\n");
-    line = get_next_line(-1);
-    if (line == NULL)
-        printf("FD invalide retourne NULL (correct)\n");
-
-    // Test 6: Lecture multiple avec 2 FD différents
-    printf("\n=== TEST 6: Deux FD en parallèle ===\n");
-    int fd1 = open("test1.txt", O_RDONLY);
-    int fd2 = open("test2.txt", O_RDONLY);
-
-    line = get_next_line(fd1);
-    printf("FD1: [%s]", line);
-    free(line);
-
-    line = get_next_line(fd2);
-    printf("FD2: [%s]", line);
-    free(line);
-
-    line = get_next_line(fd1);
-    printf("FD1: [%s]", line);
-    free(line);
-
-    close(fd1);
-    close(fd2);
-
-    printf("\n=== TOUS LES TESTS TERMINES ===\n");
-    return (0);
-} */
+    unlink("test_multiple_nl.txt");
+    
+    return 0;
+}
