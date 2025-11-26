@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/26 10:03:28 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/26 10:23:52 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ static char	*set_line(char **stash_ptr)
 	len = (newline - stash) + 1;
 	line = ft_substr(stash, 0, len);
 	if (!line)
-		return (no_new_line(stash_ptr));
+		return (NULL);
 	tmp = stash;
 	*stash_ptr = ft_substr(stash, len, ft_strlen(stash) - len);
-	free(tmp);
+    free(tmp);
 	if (!*stash_ptr && (free(line), 1))
 		return (NULL);
 	if (*stash_ptr && **stash_ptr == '\0' && (free(*stash_ptr), 1))

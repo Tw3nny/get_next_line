@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 10:59:39 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/24 21:45:47 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/26 10:13:18 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ char	*ft_substr(const char *str, unsigned int start, size_t len)
 	size_t			str_len;
 	char			*substr;
 
-	str_len = ft_strlen(str);
 	if (!str)
 		return (NULL);
+	str_len = ft_strlen(str);
 	if (start > str_len)
 		return (ft_strdup(""));
 	if (start + len > str_len)
