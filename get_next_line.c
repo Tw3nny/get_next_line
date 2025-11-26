@@ -6,13 +6,14 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/26 11:22:46 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/26 11:48:22 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <string.h>
 #include <fcntl.h> // open()
 #define BUFFFER_SIZE 1
 
@@ -125,63 +126,39 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* int main(void)
+int main(void)
 {
-    int fd;
-    char *line;
-    int count = 0;
-    
-    // Créer le fichier de test
-    system("printf '\\n\\n\\n\\n\\n\\n' > test_multiple_nl.txt");
-    
-    fd = open("test_multiple_nl.txt", O_RDONLY);
-    if (fd == -1)
-    {
-        printf("❌ Erreur: impossible d'ouvrir le fichier\n");
-        return 1;
-    }
-    
-    printf("=== TEST MULTIPLE_NL (BUFFER_SIZE = %d) ===\n\n", BUFFER_SIZE);
-    
-    while (1)
-    {
-        line = get_next_line(fd);
-        count++;
-        
-        if (line == NULL)
-        {
-            printf("Appel %d: NULL\n", count);
-            break;
-        }
-        
-        printf("Appel %d: ", count);
-        
-        if (line[0] == '\n' && line[1] == '\0')
-            printf("\"\\n\" ✅\n");
-        else if (line[0] == '\0')
-            printf("\"\" ❌ (devrait être NULL)\n");
-        else
-        {
-            printf("\"");
-            for (int i = 0; line[i]; i++)
-            {
-                if (line[i] == '\n')
-                    printf("\\n");
-                else
-                    printf("%c", line[i]);
-            }
-            printf("\"\n");
-        }
-        
-        free(line);
-    }
-    
-    printf("\n=== RÉSULTAT ATTENDU ===\n");
-    printf("Appel 1-6: \"\\n\"\n");
-    printf("Appel 7: NULL\n");
-    
-    close(fd);
-    unlink("test_multiple_nl.txt");
-    
-    return 0;
-} */
+	int fd;
+	char *line;
+	
+	system("printf '\\n\\n\\n\\n\\n' > test.txt");
+	fd = open("test.txt", O_RDONLY);
+	
+	line = get_next_line(fd);
+	printf("1: %s", line ? line : "NULL\n");
+	free(line);
+	
+	line = get_next_line(fd);
+	printf("2: %s", line ? line : "NULL\n");
+	free(line);
+	
+	line = get_next_line(fd);
+	printf("3: %s", line ? line : "NULL\n");
+	free(line);
+	
+	line = get_next_line(fd);
+	printf("4: %s", line ? line : "NULL\n");
+	free(line);
+	
+	line = get_next_line(fd);
+	printf("5: %s", line ? line : "NULL\n");
+	free(line);
+	
+	line = get_next_line(fd);
+	printf("6: %s", line ? line : "NULL\n");
+	free(line);
+	
+	close(fd);
+	unlink("test.txt");
+	return (0);
+}
