@@ -6,7 +6,7 @@
 /*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/11/26 10:23:52 by matisgutier      ###   ########.fr       */
+/*   Updated: 2025/11/26 10:55:34 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@
 char	*ft_strchr(const char *str, int c)
 {
 	int	i;
-
+	
 	i = 0;
-	if (!str)
-		return (NULL);
 	while (str[i] != '\0')
 	{
 		if (str[i] == (char) c)
@@ -38,15 +36,15 @@ char	*ft_strchr(const char *str, int c)
 	}
 	if (str[i] == (char) c)
 		return ((char *) &str[i]);
-	return (NULL);
+	return (0);
 }
-// lit la ligne jusqu'a tomber sur \n + return stash complet
 
+// lit la ligne jusqu'a tomber sur \n + return stash complet
 char	*fill_line_buffer(int fd, char *stash, char *buffer)
 {
 	ssize_t	bytes_read;
 	char	*tmp;
-
+	
 	if (!stash)
 		stash = ft_strdup("");
 	if (!stash)
@@ -70,24 +68,22 @@ char	*fill_line_buffer(int fd, char *stash, char *buffer)
 	return (stash);
 }
 
-// si on trouve pas de newline dans set_line ou que si stash est vide
-char	*no_new_line(char **stash_ptr)
+// si on trouve pas de newline dans set_line
+char    *no_new_line(char **stash_ptr)
 {
-	char	*line;
-
-	if (!*stash_ptr || **stash_ptr == '\0')
-	{
-		if (*stash_ptr)
-		{
-			free(*stash_ptr);
-			*stash_ptr = NULL;
-		}
-		return (NULL);
-	}
-	line = ft_strdup(*stash_ptr);
-	free(*stash_ptr);
-	*stash_ptr = NULL;
-	return (line);
+    char    *line;
+    
+    if (!*stash_ptr || **stash_ptr == '\0')
+    {
+        if (*stash_ptr)
+            free(*stash_ptr);
+        *stash_ptr = NULL;
+        return (NULL);
+    }
+    line = ft_strdup(*stash_ptr);
+    free(*stash_ptr);
+    *stash_ptr = NULL;
+    return (line);
 }
 
 static char	*set_line(char **stash_ptr)
@@ -97,24 +93,23 @@ static char	*set_line(char **stash_ptr)
 	char	*line;
 	char	*tmp;
 	int		len;
-
+	
 	stash = *stash_ptr;
-	if (!stash || *stash == '\0')
-		return (no_new_line(stash_ptr));
+	if (!stash)
+		return (NULL);
 	newline = ft_strchr(stash, '\n');
 	if (!newline)
 		return (no_new_line(stash_ptr));
 	len = (newline - stash) + 1;
 	line = ft_substr(stash, 0, len);
-	if (!line)
-		return (NULL);
 	tmp = stash;
 	*stash_ptr = ft_substr(stash, len, ft_strlen(stash) - len);
-    free(tmp);
-	if (!*stash_ptr && (free(line), 1))
-		return (NULL);
-	if (*stash_ptr && **stash_ptr == '\0' && (free(*stash_ptr), 1))
+	free(tmp);
+	if (*stash_ptr && **stash_ptr == '\0')
+	{
+		free(*stash_ptr);
 		*stash_ptr = NULL;
+	}
 	return (line);
 }
 
@@ -123,19 +118,16 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buffer;
 	static char	*stash;
-
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
+	
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buffer)
+		return (NULL);
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = fill_line_buffer(fd, stash, buffer);
 	free(buffer);
 	if (!stash)
-	{
-		stash = NULL;
 		return (NULL);
-	}
 	line = set_line(&stash);
 	return (line);
 }
