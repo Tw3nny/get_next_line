@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: matisgutierreztw3nny <matisgutierreztw3    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 13:58:35 by matisgutier       #+#    #+#             */
-/*   Updated: 2025/12/02 23:51:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/12/04 16:34:46 by matisgutier      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h> // open()
-#define BUFFFER_SIZE 1
 
 /* open() flags :
 	- O_RDONLY : open the file and read only
